@@ -1,0 +1,85 @@
+dMaterial Unit Test:
+  type: task
+
+  script:
+
+  ## Test DataVariety (Forced Identity dMaterial) tags
+
+    # Red wool is made out of wool..
+  - if <m@red_wool.is_made_of[m@wool]> == true 
+    narrate 'Pass!'
+    else narrate 'Fail!'
+    # ..but not made out of wood..
+  - if <m@red_wool.is_made_of[m@wood]> != true 
+    narrate 'Pass!'
+    else narrate 'Fail!'
+    # ..or black_wool.
+  - if <m@red_wool.is_made_of[m@black_wool]> != true 
+    narrate 'Pass!'
+    else narrate 'Fail!'
+    # Datas are ignored when not a DataVariety dMaterial..
+  - if <m@brewing_stand,1.is_made_of[m@brewing_stand]> == true
+    narrate 'Pass!'
+    else narrate 'Fail!'
+    # ..as seen here..
+  - if <m@brewing_stand,1.is_made_of[m@brewing_stand,2]> == true
+    narrate 'Pass!'
+    else narrate 'Fail!'
+    # ..but you can check datas manually!
+  - if <m@brewing_stand,1.data> != <m@brewing_stand,2.data>
+    narrate 'Pass!'
+    else narrate 'Fail!'
+
+
+  ## Test technical tags
+
+    # Check technical tags against known constants
+  - if <m@diamond_sword.max_stack_size> == 1 
+    narrate 'Pass!'
+    else narrate 'Fail!'
+  - if <m@diamond_sword.max_durability> > 1 
+    narrate 'Pass!'
+    else narrate 'Fail!'
+  - if <m@red_clay.data> == 14 
+    narrate 'Pass!'
+    else narrate 'Fail!'
+  - if <m@stone_sword.item> == 'i@stone_sword'
+    narrate 'Pass!'
+    else narrate 'Fail!'
+  - if <m@birch_sapling.bukkit_enum> == 'sapling' 
+    narrate 'Pass!'
+    else narrate 'Fail!'
+  - if <m@stone.id> == 1 
+    narrate 'Pass!'
+    else narrate 'Fail!'
+
+  ## Test property tags
+
+    # Check property tags against known properties
+  - if <m@sand.has_gravity> == true 
+    narrate 'Pass!'
+    else narrate 'Fail!'
+  - if <m@glass.is_block> == true
+    narrate 'Pass!'
+    else narrate 'Fail!'
+  - if <m@log.is_burnable> == true
+    narrate 'Pass!'
+    else narrate 'Fail!'
+  - if <m@bread.is_edible> == true 
+    narrate 'Pass!'
+    else narrate 'Fail!'
+  - if <m@wood.is_flammable> == true 
+    narrate 'Pass!'
+    else narrate 'Fail!'
+  - if <m@record_8.is_record> == true 
+    narrate 'Pass!'
+    else narrate 'Fail!'
+  - if <m@cobblestone.is_solid> == true 
+    narrate 'Pass!'
+    else narrate 'Fail!'
+  - if <m@sunflower.is_transparent> == true 
+    narrate 'Pass!'
+    else narrate 'Fail!'
+
+  - narrate 'dMaterial unit test complete.'
+
