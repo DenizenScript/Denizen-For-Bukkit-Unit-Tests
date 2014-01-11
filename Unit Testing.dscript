@@ -3,28 +3,31 @@ Unit Test Set Prefix:
   type: task
   definitions: prefix
   script:
-  - flag global "Unit Test Prefix:%prefix%"
+  - flag global "Unit Test Prefix:%prefix%."
 
 ## Write output values
 Unit Test Write Output:
   type: task
   definitions: key|value
   script:
-  - yaml "write:<server.flag[Unit Test Prefix]>.%key%" "value:%value%" "id:Unit Test Yaml"
+  - yaml "write:<server.flag[Unit Test Section]>.<server.flag[Unit Test Prefix]>%key%" "value:%value%" "id:Unit Test Yaml"
 
 ## Create output Yaml object
 Unit Test Create Output:
   type: task
+  definitions: test_section
   script:
-  - yaml create "id:Unit Test Yaml"
+  - if <server.has_file[UnitTest.yml]> yaml load:UnitTest.yml "id:Unit Test Yaml"
+    else yaml create "id:Unit Test Yaml"
+  - flag global "Unit Test Section:%test_section%"
   - flag global "Unit Test Prefix:"
 
 ## Save output to Yaml file
 Unit Test Save Output:
   type: task
-  definitions: test_ran
   script:
-  - run "s@Unit Test Set Prefix" "def:Last Ran"
-  - run "s@Unit Test Write Output" "def:time|<util.date.time>"
-  - run "s@Unit Test Write Output" "def:test|%test_ran%"
+  - flag global "Unit Test Prefix:"
+  - run "s@Unit Test Write Output" "def:Last Ran|<util.date> at <util.date.time>"
+  - run "s@Unit Test Write Output" "def:Denizen Version|<server.denizen_version>"
+  - run "s@Unit Test Write Output" "def:Server Version|<server.version>"
   - yaml savefile:UnitTest.yml "id:Unit Test Yaml"

@@ -16,7 +16,7 @@ dInventory Unit Task:
   ## Create necessary objects
   - define output "s@Unit Test Write Output"
   - define inventory "in@dInventory Unit Inventory"
-  - run "s@Unit Test Create Output"
+  - run "s@Unit Test Create Output" "def:dInventory Unit Test"
 
 
   ## Test generic tags with the inventory script
