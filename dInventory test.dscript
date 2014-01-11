@@ -1,0 +1,114 @@
+## Inventory script for testing
+dInventory Unit Inventory:
+  type: inventory
+  size: 9
+  title: Unit Inventory
+  definitions:
+    log: i@oak_log[display_name=Unit Logs;lore=Chopped For Unit Testing;quantity=2]
+    swords: i@diamond_sword[quantity=3]
+  slots:
+  - "[i@air] [i@air] [i@air] [log] [i@snow_ball] [swords] [i@air] [i@air] [i@air]"
+
+dInventory Unit Task:
+  type: task
+  script:
+
+  ## Create necessary objects
+  - define output "s@Unit Test Write Output"
+  - define inventory "in@dInventory Unit Inventory"
+  - run "s@Unit Test Create Output"
+
+
+  ## Test generic tags with the inventory script
+  - run "s@Unit Test Set Prefix" def:generic
+
+  ### Start generic tags
+  - if <%inventory%.contains[i@snow_ball]> == true
+    run %output% def:contains.default|Pass
+    else run %output% def:contains.default|Fail
+
+  - if <%inventory%.contains[i@diamond_sword].qty[3]> == true
+    run %output% def:contains.qty|Pass
+    else run %output% def:contains.qty|Fail
+
+  - if "<%inventory%.contains.display[Unit Logs]>" == true
+    run %output% def:contains.display.default|Pass
+    else run %output% def:contains.display.default|Fail
+
+  - if "<%inventory%.contains.display[strict:Unit Logs].qty[2]>" == true
+    run %output% def:contains.display.qty|Pass
+    else run %output% def:contains.display.qty|Fail
+
+  - if <%inventory%.equipment> == null
+    run %output% def:equipment|Pass
+    else run %output% def:equipment|Fail
+
+  - if "<%inventory%.contains.material[m@snow_ball]>" == true
+    run %output% def:contains.material.default|Pass
+    else run %output% def:contains.material.default|Fail
+
+  - if "<%inventory%.contains.material[m@snow_ball].qty[1]>" == true
+    run %output% def:contains.material.qty|Pass
+    else run %output% def:contains.material.qty|Fail
+
+  - if <%inventory%.id_type> == "script"
+    run %output% def:id_type|Pass
+    else run %output% def:id_type|Fail
+
+  - if <%inventory%.location> == null
+    run %output% def:location|Pass
+    else run %output% def:location|Fail
+
+  - if <%inventory%.qty[i@diamond_sword]> == 3
+    run %output% def:qty|Pass
+    else run %output% def:qty|Fail
+
+  - if <%inventory%.stacks> == 3
+    run %output% def:stacks.default|Pass
+    else run %output% def:stacks.default|Fail
+
+  - if <%inventory%.stacks[snow_ball]> == 1
+    run %output% def:stacks.with_item|Pass
+    else run %output% def:stacks.with_item|Fail
+
+  - if <%inventory%.type> == "CHEST"
+    run %output% def:type|Pass
+    else run %output% def:type|Fail
+  ### End generic tags
+
+
+  ## Test property tags with the inventory script
+  - run "s@Unit Test Set Prefix" def:property
+
+  ### Start property tags
+  - if "<%inventory%.list_contents.as_string.contains[<&lb>]>" == true
+    run %output% def:list_contents.default|Pass
+    else run %output% def:list_contents.default|Fail
+
+  - if "<%inventory%.list_contents.simple.as_string.contains[<&lb>]>" == false
+    run %output% def:list_contents.simple|Pass
+    else run %output% def:list_contents.simple|Fail
+
+  - if "<%inventory%.list_contents.with_lore[Chopped For Unit Testing].as_string.contains[<&lb>]>" == true
+    run %output% def:list_contents.with_lore.default|Pass
+    else run %output% def:list_contents.with_lore.default|Fail
+
+  - if "<%inventory%.list_contents.with_lore[Chopped For Unit Testing].simple>" == li@i@oak_log
+    run %output% def:list_contents.with_lore.simple|Pass
+    else run %output% def:list_contents.with_lore.simple|Fail
+
+  - if <%inventory%.id_holder> == "dInventory Unit Inventory"
+    run %output% def:id_holder|Pass
+    else run %output% def:id_holder|Fail
+
+  - if <%inventory%.size> == 9
+    run %output% def:size|Pass
+    else run %output% def:size|Fail
+
+  - if <%inventory%.title> == "Unit Inventory"
+    run %output% def:title|Pass
+    else run %output% def:title:Fail
+  ### End property tags
+
+  ## Save output to Yaml file
+  - run "s@Unit Test Save Output" "def:dInventory Unit Test"

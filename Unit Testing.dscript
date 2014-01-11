@@ -1,0 +1,30 @@
+## Set current prefix for output keys
+Unit Test Set Prefix:
+  type: task
+  definitions: prefix
+  script:
+  - flag global "Unit Test Prefix:%prefix%"
+
+## Write output values
+Unit Test Write Output:
+  type: task
+  definitions: key|value
+  script:
+  - yaml "write:<server.flag[Unit Test Prefix]>.%key%" "value:%value%" "id:Unit Test Yaml"
+
+## Create output Yaml object
+Unit Test Create Output:
+  type: task
+  script:
+  - yaml create "id:Unit Test Yaml"
+  - flag global "Unit Test Prefix:"
+
+## Save output to Yaml file
+Unit Test Save Output:
+  type: task
+  definitions: test_ran
+  script:
+  - run "s@Unit Test Set Prefix" "def:Last Ran"
+  - run "s@Unit Test Write Output" "def:time|<util.date.time>"
+  - run "s@Unit Test Write Output" "def:test|%test_ran%"
+  - yaml savefile:UnitTest.yml "id:Unit Test Yaml"
