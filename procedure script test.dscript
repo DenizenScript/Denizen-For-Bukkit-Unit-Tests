@@ -44,6 +44,7 @@ test_isbetween:
 
 Procedure Script Unit Test:
   type: world
+  speed: 0
 
   events:
     on server start:

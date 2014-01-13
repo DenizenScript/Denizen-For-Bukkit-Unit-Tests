@@ -1,0 +1,110 @@
+## Include any script assets (such as item scripts/inventory scripts/etc.)
+## that the unit test will need in order to test.
+
+
+Flag Unit Test:
+  type: world
+  speed: 0
+
+    ## Include this exact statement for each unit test
+  events:
+    on server start:
+    - if <server.flag[unit_tasks].as_list> !contains <script> flag server unit_tasks:->:<script>
+
+
+  script:
+    ## Do this for each unit test
+  - define output "s@Unit Test Write Output"
+  - run 's@Unit Test Create Output' 'd:<script.name>'
+
+    ## Do this for each 'section' you intend to test, 
+    ## changing the definition to something appropriate
+  - run "s@Unit Test Set Prefix" 'def:mechanics'
+  
+  - if '<s@constant tag tester.constant[test script constant]>' == 'expected value'
+    run %output% 'def:element value|Pass'
+    else run %output% 'def:element value|Fail'
+  
+    # Test basic 1-item flag
+  - flag test:test
+  - flag global test:test
+  - if <player.flag[test]> == <flag.p:test>
+      && <player.flag[test]> == test
+      && <server.flag[test]> == <flag.g:test>
+      && <server.flag[test]> == test
+      run %output% 'def:1_item|Pass'
+      else run %output% 'def:1_item|Fail'
+  - flag test:!
+  - flag global test:!
+
+  # Test boolean flag
+  - flag test
+  - flag global test
+  - if <player.flag[test]> == <flag.p:test>
+    && <player.flag[test]> == true
+    && <server.flag[test]> == <flag.g:test>
+    && <player.flag[test]> == true
+      run %output% 'def:boolean|Pass'
+      else run %output% 'def:boolean|Fail'
+  - flag test:!
+  - flag global test:!
+
+  # Test flag array 
+  - flag test:->:test1
+  - flag test:->:test2
+  - flag test:->:test3
+  - flag global test:->:test1
+  - flag global test:->:test2
+  - flag global test:->:test3    
+  - if <player.flag[test]> == <flag.p:test>
+    && <player.flag[test]> == test3
+    && <server.flag[test]> == <flag.g:test>
+    && <server.flag[test]> == test3
+      run %output% 'def:array_last|Pass'
+      else run %output% 'def:array_last|Fail'
+
+  # Test flag fetch from array
+  - if <player.flag[test].get[2]> == test2
+    && <server.flag[test].get[2]> == test2
+      run %output% 'def:array_fetch|Pass'
+      else run %output% 'def:array_fetch|Fail'
+
+  # Test flag as_list
+  - if <player.flag[test].as_list> == <flag.p:test.as_list>
+    && <player.flag[test].as_list> == li@test1|test2|test3
+    && <server.flag[test].as_list> == <flag.g:test.as_list>
+    && <server.flag[test].as_list> == li@test1|test2|test3
+      run %output% 'def:as_list|Pass'
+      else run %output% 'def:as_list|Fail'
+
+  # Test flag size
+  - if <player.flag[test].size> == <flag.p:test.size>
+    && <player.flag[test].size> == 3
+    && <server.flag[test].size> == <flag.g:test.size>
+    && <server.flag[test].size> == 3
+      run %output% 'def:size|Pass'
+      else run %output% 'def:size|Fail'
+
+  # Test flag is_expired
+  - if <player.flag[test].is_expired> == <flag.p:test.is_expired>
+    && <player.flag[test].is_expired> == false
+    && <server.flag[test].is_expired> == <flag.g:test.is_expired>
+    && <server.flag[test].is_expired> == false
+    && <player.flag[test2].is_expired> == <flag.p:test2.is_expired>
+      run %output% 'def:expired|Pass'
+      else run %output% 'def:expired|Fail'
+  
+  # Test flag item removal
+  - flag test:->:test1
+  - flag test:<-:test1
+  - flag global test:->:test1
+  - flag global test:<-:test1
+  - if <player.flag[test].as_list> == <flag.p:test.as_list>
+    && <player.flag[test].as_list> == li@test2|test3|test1
+    && <server.flag[test].as_list> == <flag.g:test.as_list>
+    && <server.flag[test].as_list> == li@test2|test3|test1
+      run %output% 'def:array_removeal|Pass'
+      else run %output% 'def:array_removal|Fail'
+
+  - flag test:!
+  - flag global test:!
