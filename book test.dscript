@@ -1,0 +1,39 @@
+Example book script:
+  type: book
+
+  title: This is an example title.
+  author: aufdemrand
+  text:
+  - page 1 is pretty short.
+  - page 2 is kind of short, but longer than page 1.
+  - page 3 is super short.
+
+
+Book Unit Test:
+  type: world
+
+    ## Include this exact statement for each unit test
+  events:
+    on server start:
+    - if <server.flag[unit_tasks].as_list> !contains <script>
+      flag server unit_tasks:->:<script>
+
+
+  script:
+  - define output "s@Unit Test Write Output"
+  - run 's@Unit Test Create Output' 'd:<script.name>'
+
+    # Test book meta tags
+  - run "s@Unit Test Set Prefix" 'def:meta'
+
+  - if '<i@example book script.book.title>' == 'This is an example title.'
+    run %output% 'def:book_title|Pass'
+    else run %output% 'def:book_title|Fail'
+
+  - if '<i@example book script.book.page_count>' == '3'
+    run %output% 'def:page_count|Pass'
+    else run %output% 'def:page_count|Fail'
+
+  - if '<i@example book script.book.author>' == 'aufdemrand'
+    run %output% 'def:author|Pass'
+    else run %output% 'def:author|Fail'

@@ -1,0 +1,74 @@
+# include 2 typical procedure scripts
+
+test_generate_number_list:
+  type: procedure
+  definitions: low|high
+
+  script:
+  # Figure out how many iterations to do
+  - define iterations '<el@val[%high%].sub[<m:%low% - 1>].asint>'
+  
+  # Counters are easier with flags, though can also
+  # be done with the use of definitions.
+  - flag server 'gnl_counter:%low%'
+  
+  # Add numbers to a flag array, then increase the counter
+  # (:->:... adds an item to a flag array )
+  # (:++ increases a flag by '1'.)
+  - repeat %iterations% {
+      - flag server gnl_temp:->:<server.flag[gnl_counter].asint>
+      - flag server gnl_counter:++
+    }
+
+  # // AFTER NUMBER ITERATIONS
+  
+  # Return the compiled list from the flag array
+  # (passively indicates we'll run code beyond this determination)
+  - determine passively '<server.flag[gnl_temp].as_list>'
+  
+  # Clean up flags (:! action removes flags entirely)
+  - flag server gnl_temp:!
+  - flag server gnl_counter:!
+
+
+test_isbetween:
+  type: procedure
+  definitions: val|low|high
+
+  script:
+  - if %val% matches decimal && %val% >= %low% && %val% <= %high%
+    determine true
+    else determine false
+
+
+
+Procedure Script Unit Test:
+  type: world
+
+  events:
+    on server start:
+    - if <server.flag[unit_tasks].as_list> !contains <script>
+      flag server unit_tasks:->:<script>
+
+
+  script:
+  - define output "s@Unit Test Write Output"
+  - run 's@Unit Test Create Output' 'd:<script.name>'
+
+  - run "s@Unit Test Set Prefix" 'def:test'
+
+  - if '<proc[test_generate_number_list].context[5|10]>' == 'li@5|6|7|8|9|10'
+    run %output% 'def:generate_number_list|Pass'
+    else run %output% 'def:generate_number_list|Fail'
+
+  - if '<proc[test_isbetween].context[5|1|10]>' == 'true'
+    run %output% 'def:is_between|Pass'
+    else run %output% 'def:is_between|Fail'
+
+
+
+
+
+
+
+
