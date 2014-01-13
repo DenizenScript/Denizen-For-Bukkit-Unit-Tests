@@ -1,0 +1,34 @@
+## Include any script assets (such as item scripts/inventory scripts/etc.)
+## that the unit test will need in order to test.
+
+
+_Unit Test Template:
+  type: world
+
+    ## Include this exact statement for each unit test
+  events:
+    on server start:
+    - if <server.flag[unit_tasks].as_list> !contains <script>
+      flag server unit_tasks:->:<script>
+
+
+  script:
+    ## Do this for each unit test
+  - define output "s@Unit Test Write Output"
+  - run 's@Unit Test Create Output' 'd:<script.name>'
+
+    ## Do this for each 'section' you intend to test, 
+    ## changing the definition to something appropriate
+  - run "s@Unit Test Set Prefix" 'def:my section'
+  
+    ## Do this for each item you intend to test. Usually
+    ## is done in this format, though what's required is
+    ## for %output% to be run, passing the name of the test
+    ## and 'pass' or 'fail'
+  - if '<s@constant tag tester.constant[test script constant]>' == 'expected value'
+    run %output% 'def:element value|Pass'
+    else run %output% 'def:element value|Fail'
+  
+    ## ... repeat above until all is tested for this unit
+
+

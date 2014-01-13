@@ -54,7 +54,7 @@ Constant Tags Unit Task:
     run %output% 'def:list value|Pass'
     else run %output% 'def:list value value|Fail'
 
-  - if '<s@constant tag tester.constant[test script grid constant].get_sub_values[1]>' == 'li@key_1|key_2'
+  - if '<s@constant tag tester.constant[test script grid constant].get_sub_items[1]>' == 'li@key_1|key_2'
     run %output% 'def:grid value|Pass'
     else run %output% 'def:grid value|Fail'
 
