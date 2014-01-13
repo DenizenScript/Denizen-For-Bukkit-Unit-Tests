@@ -1,0 +1,83 @@
+## Inventory script for testing
+Constant Tag Tester:
+  type: assignment
+
+  default constants:
+    npc test constant: expected value
+
+  test script constant: expected value
+
+  in deep:
+    script constant: expected value
+
+  test script list constant:
+  - expected value 1
+  - expected value 2
+
+  test script grid constant:
+  - key_1/value 1
+  - key_2/value 2
+
+
+
+
+
+Constant Tags Unit Task:
+  type: world
+  speed: 0
+
+  events:
+    on server start:
+    - if <server.flag[unit_tasks].as_list> !contains <script>
+      flag server unit_tasks:->:<script>
+
+
+  script:
+    ## Create necessary objects
+  - define output "s@Unit Test Write Output"
+  - run 's@Unit Test Create Output' 'd:<script.name>'
+  - create e@player 'constant npc'
+  - assignment 'npc:n@constant npc' set 's@constant tag tester'
+
+    ## Test script constants
+  - run "s@Unit Test Set Prefix" 'def:script constants'
+  
+  - if '<s@constant tag tester.constant[test script constant]>' == 'expected value'
+    run %output% 'def:element value|Pass'
+    else run %output% 'def:element value|Fail'
+
+  - if '<s@constant tag tester.constant[in deep.script constant]>' == 'expected value'
+    run %output% 'def:deep element value|Pass'
+    else run %output% 'def:deep element value|Fail'
+
+  - if '<s@constant tag tester.constant[test script list constant]>' == 'li@expected value 1|expected value 2'
+    run %output% 'def:list value|Pass'
+    else run %output% 'def:list value value|Fail'
+
+  - if '<s@constant tag tester.constant[test script grid constant].get_sub_value[1]>' == 'li@key_1|key_2'
+    run %output% 'def:grid value|Pass'
+    else run %output% 'def:grid value|Fail'
+
+
+  ## Test npc constants
+  - run "s@Unit Test Set Prefix" 'def:npc constants'
+  
+  - if '<n@constant npc.constant[npc test constant]>' == 'expected value'
+    run %output% def:default|Pass
+    else run %output% def:default|Fail
+
+  - if 'npc:n@constant npc' '<cons:npc test constant>' == 'expected value'
+    run %output% def:legacy|Pass
+    else run %output% def:legacy|Fail
+
+  - execute as_op "npc sel 'constant npc'"
+  - execute as_op "npc constants --set 'npc test constant' --value 'new expected value'"
+
+  - if '<n@constant npc.constant[npc test constant]>' == 'new expected value'
+    run %output% def:override|Pass
+    else run %output% def:override|Fail   
+
+  - remove '<n@constant npc>'
+
+
+

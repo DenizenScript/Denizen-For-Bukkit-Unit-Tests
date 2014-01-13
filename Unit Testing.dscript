@@ -1,6 +1,7 @@
 ## Set current prefix for output keys
 Unit Test Set Prefix:
   type: task
+  speed: 0
   definitions: prefix
   script:
   - flag global "Unit Test Prefix:%prefix%."
@@ -8,6 +9,7 @@ Unit Test Set Prefix:
 ## Write output values
 Unit Test Write Output:
   type: task
+  speed: 0
   definitions: key|value
   script:
   - yaml "write:<server.flag[Unit Test Section]>.<server.flag[Unit Test Prefix]>%key%" "value:%value%" "id:Unit Test Yaml"
@@ -15,19 +17,51 @@ Unit Test Write Output:
 ## Create output Yaml object
 Unit Test Create Output:
   type: task
+  speed: 0
   definitions: test_section
   script:
-  - if <server.has_file[UnitTest.yml]> yaml load:UnitTest.yml "id:Unit Test Yaml"
-    else yaml create "id:Unit Test Yaml"
   - flag global "Unit Test Section:%test_section%"
   - flag global "Unit Test Prefix:"
 
 ## Save output to Yaml file
 Unit Test Save Output:
   type: task
+  speed: 0
   script:
   - flag global "Unit Test Prefix:"
   - run "s@Unit Test Write Output" "def:Last Ran|<util.date> at <util.date.time>"
   - run "s@Unit Test Write Output" "def:Denizen Version|<server.denizen_version>"
   - run "s@Unit Test Write Output" "def:Server Version|<server.version>"
   - yaml savefile:UnitTest.yml "id:Unit Test Yaml"
+
+Unit Test Handler:
+  type: world
+  events:
+    on unittest command:
+    - narrate 'Starting unit tests.'
+    - if <server.has_file[UnitTest.yml]> yaml load:UnitTest.yml "id:Unit Test Yaml"
+      else yaml create "id:Unit Test Yaml"
+    - flag server ut_counter:0
+    - run locally 'do tests'
+    - determine fulfilled
+
+
+  do tests:
+  - if <server.flag[unit_tasks].as_list.size> <= <server.flag[ut_counter]> {
+      - run 's@unit test save output'
+      - narrate 'Finished unit tests.'
+      - determine fulfilled
+      - queue clear
+    }
+  
+  - if <queue.exists[test_queue]> == false {
+      - flag server ut_counter:++
+      - narrate 'Running test -> <server.flag[unit_tasks].as_list.get[<server.flag[ut_counter].as_int>]>'
+      - run <server.flag[unit_tasks].as_list.get[<server.flag[ut_counter].as_int>]> id:test_queue
+    }
+
+  - wait 3s
+
+  - run locally 'do tests'
+
+  

@@ -9,14 +9,21 @@ dInventory Unit Inventory:
   slots:
   - "[i@air] [i@air] [i@air] [log] [i@snow_ball] [swords] [i@air] [i@air] [i@air]"
 
-dInventory Unit Task:
-  type: task
-  script:
 
+dInventory Unit Task:
+  type: world
+  speed: 0
+
+  events:
+    on server start:
+    - if <server.flag[unit_tasks].as_list> !contains <script>
+      flag server unit_tasks:->:<script>
+
+  script:
   ## Create necessary objects
   - define output "s@Unit Test Write Output"
   - define inventory "in@dInventory Unit Inventory"
-  - run "s@Unit Test Create Output" "def:dInventory Unit Test"
+  - run 's@Unit Test Create Output' 'd:<script.name>'
 
 
   ## Test generic tags with the inventory script
@@ -107,7 +114,7 @@ dInventory Unit Task:
 
   - if <%inventory%.title> == "Unit Inventory"
     run %output% def:title|Pass
-    else run %output% def:title:Fail
+    else run %output% def:title|Fail
   ### End property tags
 
   ## Save output to Yaml file
