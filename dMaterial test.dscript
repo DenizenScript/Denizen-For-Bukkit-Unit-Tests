@@ -1,85 +1,100 @@
 dMaterial Unit Test:
-  type: task
+  type: world
+  speed: 0
+
+    ## Include this exact statement for each unit test
+  events:
+    on server start:
+    - if <server.flag[unit_tasks].as_list> !contains <script>
+      flag server unit_tasks:->:<script>
+
 
   script:
+    ## Do this for each unit test
+  - define output "s@Unit Test Write Output"
+  - run 's@Unit Test Create Output' 'd:<script.name>'
 
-  ## Test DataVariety (Forced Identity dMaterial) tags
-
+    ## Test dataVariety materials (custom dMaterials)
+  - run "s@Unit Test Set Prefix" 'def:data varieties'
+  
     # Red wool is made out of wool..
   - if <m@red_wool.is_made_of[m@wool]> == true 
-    narrate 'Pass!'
-    else narrate 'Fail!'
+    run %output% 'def:is_made_of|Pass'
+    else run %output% 'def:is_made_of|Fail'
     # ..but not made out of wood..
   - if <m@red_wool.is_made_of[m@wood]> != true 
-    narrate 'Pass!'
-    else narrate 'Fail!'
+    run %output% 'def:is_made_of_2|Pass'
+    else run %output% 'def:is_made_of_2|Fail'
     # ..or black_wool.
   - if <m@red_wool.is_made_of[m@black_wool]> != true 
-    narrate 'Pass!'
-    else narrate 'Fail!'
+    run %output% 'def:is_made_of_3|Pass'
+    else run %output% 'def:is_made_of_3|Fail'
     # Datas are ignored when not a DataVariety dMaterial..
   - if <m@brewing_stand,1.is_made_of[m@brewing_stand]> == true
-    narrate 'Pass!'
-    else narrate 'Fail!'
+    run %output% 'def:is_made_of_4|Pass'
+    else run %output% 'def:is_made_of_4|Fail'
     # ..as seen here..
   - if <m@brewing_stand,1.is_made_of[m@brewing_stand,2]> == true
-    narrate 'Pass!'
-    else narrate 'Fail!'
+    run %output% 'def:is_made_of_5|Pass'
+    else run %output% 'def:is_made_of_5|Fail'
     # ..but you can check datas manually!
   - if <m@brewing_stand,1.data> != <m@brewing_stand,2.data>
-    narrate 'Pass!'
-    else narrate 'Fail!'
+    run %output% 'def:datas|Pass'
+    else run %output% 'def:datas|Fail'
 
 
   ## Test technical tags
 
+  - run "s@Unit Test Set Prefix" 'def:technical tags'
+
     # Check technical tags against known constants
   - if <m@diamond_sword.max_stack_size> == 1 
-    narrate 'Pass!'
-    else narrate 'Fail!'
+    run %output% 'def:max_stack_size|Pass'
+    else run %output% 'def:max_stack_size|Fail'
   - if <m@diamond_sword.max_durability> > 1 
-    narrate 'Pass!'
-    else narrate 'Fail!'
+    run %output% 'def:max_durability|Pass'
+    else run %output% 'def:max_durability|Fail'
   - if <m@red_clay.data> == 14 
-    narrate 'Pass!'
-    else narrate 'Fail!'
+    run %output% 'def:data|Pass'
+    else run %output% 'def:data|Fail'
   - if <m@stone_sword.item> == 'i@stone_sword'
-    narrate 'Pass!'
-    else narrate 'Fail!'
+    run %output% 'def:item|Pass'
+    else run %output% 'def:item|Fail'
   - if <m@birch_sapling.bukkit_enum> == 'sapling' 
-    narrate 'Pass!'
-    else narrate 'Fail!'
+    run %output% 'def:bukkit_enum|Pass'
+    else run %output% 'def:bukkit_enum|Fail'
   - if <m@stone.id> == 1 
-    narrate 'Pass!'
-    else narrate 'Fail!'
+    run %output% 'def:id|Pass'
+    else run %output% 'def:id|Fail'
 
   ## Test property tags
 
+  - run "s@Unit Test Set Prefix" 'def:properties'
+
     # Check property tags against known properties
   - if <m@sand.has_gravity> == true 
-    narrate 'Pass!'
-    else narrate 'Fail!'
+    run %output% 'def:has_gravity|Pass'
+    else run %output% 'def:has_gravity|Fail'
   - if <m@glass.is_block> == true
-    narrate 'Pass!'
-    else narrate 'Fail!'
+    run %output% 'def:is_block|Pass'
+    else run %output% 'def:is_block|Fail'
   - if <m@log.is_burnable> == true
-    narrate 'Pass!'
-    else narrate 'Fail!'
+    run %output% 'def:is_burnable|Pass'
+    else run %output% 'def:is_burnable|Fail'
   - if <m@bread.is_edible> == true 
-    narrate 'Pass!'
-    else narrate 'Fail!'
+    run %output% 'def:is_edible|Pass'
+    else run %output% 'def:is_edible|Fail'
   - if <m@wood.is_flammable> == true 
-    narrate 'Pass!'
-    else narrate 'Fail!'
+    run %output% 'def:is_flammable|Pass'
+    else run %output% 'def:is_flammable|Fail'
   - if <m@record_8.is_record> == true 
-    narrate 'Pass!'
-    else narrate 'Fail!'
+    run %output% 'def:is_record|Pass'
+    else run %output% 'def:is_record|Fail'
   - if <m@cobblestone.is_solid> == true 
-    narrate 'Pass!'
-    else narrate 'Fail!'
+    run %output% 'def:is_solid|Pass'
+    else run %output% 'def:is_solid|Fail'
   - if <m@sunflower.is_transparent> == true 
-    narrate 'Pass!'
-    else narrate 'Fail!'
+    run %output% 'def:is_transparent|Pass'
+    else run %output% 'def:is_transparent|Fail'
 
-  - narrate 'dMaterial unit test complete.'
 

@@ -28,6 +28,7 @@ Unit Test Save Output:
   type: task
   speed: 0
   script:
+  - flag global "Unit Test Section:_stats"
   - flag global "Unit Test Prefix:"
   - run "s@Unit Test Write Output" "def:Last Ran|<util.date> at <util.date.time>"
   - run "s@Unit Test Write Output" "def:Denizen Version|<server.denizen_version>"
@@ -47,7 +48,8 @@ Unit Test Handler:
 
 
   do tests:
-  - if <server.flag[unit_tasks].as_list.size> <= <server.flag[ut_counter]> {
+  - if <server.flag[unit_tasks].as_list.size> <= <server.flag[ut_counter]>
+    && <queue.exists[test_queue]> == false {
       - run 's@unit test save output'
       - narrate 'Finished unit tests.'
       - determine fulfilled
