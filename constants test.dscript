@@ -67,8 +67,8 @@ Constant Tags Unit Task:
     run %output% def:legacy|Pass
     else run %output% def:legacy|Fail
 
-  - execute as_op "npc sel 'constant npc'"
-  - execute as_op "npc constants --set 'npc test constant' --value 'new expected value'"
+  - execute as_server "npc sel 'constant npc'"
+  - execute as_server "npc constants --set 'npc test constant' --value 'new expected value'"
 
   - if '<n@constant npc.constant[npc test constant]>' == 'new expected value'
     run %output% def:override|Pass

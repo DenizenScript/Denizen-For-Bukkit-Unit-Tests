@@ -39,6 +39,12 @@ Unit Test Handler:
   type: world
   events:
     on unittest command:
+    - if !<context.server> {
+      - if !<player.is_op> {
+        - narrate "<&c>Only an operator or the server may do this command."
+        - determine fulfilled
+        }
+      }
     - narrate 'Starting unit tests.'
     - if <server.has_file[UnitTest.yml]> yaml load:UnitTest.yml "id:Unit Test Yaml"
       else yaml create "id:Unit Test Yaml"

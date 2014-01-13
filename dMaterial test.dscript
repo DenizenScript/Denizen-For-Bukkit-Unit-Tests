@@ -17,6 +17,10 @@ dMaterial Unit Test:
     ## Test dataVariety materials (custom dMaterials)
   - run "s@Unit Test Set Prefix" 'def:data varieties'
   
+    # Red wool is red wool.
+  - if <m@red_wool.name> == red_wool 
+    run %output% 'def:name|Pass'
+    else run %output% 'def:name|Fail'
     # Red wool is made out of wool..
   - if <m@red_wool.is_made_of[m@wool]> == true 
     run %output% 'def:is_made_of|Pass'

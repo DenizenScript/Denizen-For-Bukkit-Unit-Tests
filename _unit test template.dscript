@@ -8,8 +8,8 @@ _Unit Test Template:
     ## Include this exact statement for each unit test
   events:
     on server start:
-    - if <server.flag[unit_tasks].as_list> !contains <script>
-      flag server unit_tasks:->:<script>
+    # Uncomment the line below to enable actual usage
+    #- if <server.flag[unit_tasks].as_list> !contains <script> flag server unit_tasks:->:<script>
 
 
   script:
