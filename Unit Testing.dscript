@@ -37,6 +37,7 @@ Unit Test Save Output:
 
 Unit Test Handler:
   type: world
+  speed: 0
   events:
     on unittest command:
     - if !<context.server> {
@@ -63,12 +64,13 @@ Unit Test Handler:
     }
   
   - if <queue.exists[test_queue]> == false {
+      - if <player> == null define player <server.list_players.get[1]> else define player <player>
       - flag server ut_counter:++
       - narrate 'Running test -> <server.flag[unit_tasks].as_list.get[<server.flag[ut_counter].as_int>]>'
-      - run <server.flag[unit_tasks].as_list.get[<server.flag[ut_counter].as_int>]> id:test_queue
+      - run <server.flag[unit_tasks].as_list.get[<server.flag[ut_counter].as_int>]> id:test_queue as:%player%
     }
 
-  - wait 3s
+  - wait 2s
 
   - run locally 'do tests'
 
