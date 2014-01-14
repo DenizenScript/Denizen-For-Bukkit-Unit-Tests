@@ -1,9 +1,10 @@
 ## Include any script assets (such as item scripts/inventory scripts/etc.)
 ## that the unit test will need in order to test.
 
-
+# Rename to 'x Unit Test'
 _Unit Test Template:
   type: world
+  speed: 0
 
     ## Include this exact statement for each unit test
   events:

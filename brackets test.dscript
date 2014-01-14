@@ -1,0 +1,56 @@
+Brackets Unit Test:
+  type: world
+  speed: 0
+
+  events:
+    on server start:
+    - if <server.flag[unit_tasks].as_list> !contains <script>
+      flag server unit_tasks:->:<script>
+
+
+  script:
+  - define output "s@Unit Test Write Output"
+  - run 's@Unit Test Create Output' 'd:<script.name>'
+
+    ## Test basic common tags that use brackets
+  - run "s@Unit Test Set Prefix" 'def:common bracketted tags'
+  
+    # A random number in the range of 5-5 is always 5
+  - if <util.random.int[5].to[5]> == 5
+    run %output% 'def:util_random_int|Pass'
+    else run %output% 'def:util_random_int|Fail'
+    # The server should always have a config file
+  - if <server.has_file[config.yml]>
+    run %output% 'def:config_yml|Pass'
+    else run %output% 'def:config_yml|Fail'
+
+  ## Test list tags
+
+  - run "s@Unit Test Set Prefix" 'def:list tags'
+
+    # A list of '1|2|3|a|b|c' should identify as the same
+  - if <li@1|2|3|a|b|c> == li@1|2|3|a|b|c
+    run %output% 'def:simple_identify|Pass'
+    else run %output% 'def:simple_identify|Fail'
+    # A list of 'a[a|b]|2|3[a|b]4|d' should identify as the same
+  - if <li@a[a|b]|2|3[a|b]4|d> == li@a[a|b]|2|3[a|b]4|d
+    run %output% 'def:complex_identify|Pass'
+    else run %output% 'def:complex_identify|Fail'
+    # A list of 'a[a|b]|2|3[a|b]4|d' should have the first item 'a[a|b]'
+  - if <li@a[a|b]|2|3[a|b]4|d.get[1]> == a[a|b]
+    run %output% 'def:first_item|Pass'
+    else run %output% 'def:first_item|Fail'
+    # A list of 'a[a|b]|2|3[a|b]4|d' should have the third item 3[a|b]4
+  - if <li@a[a|b]|2|3[a|b]4|d.get[3]> == 3[a|b]4
+    run %output% 'def:third_item|Pass'
+    else run %output% 'def:third_item|Fail'
+    # A list of 'a[a|b]|2|3[a|b]4|d' should be 4 long
+  - if <li@a[a|b]|2|3[a|b]4|d.size> == 4
+    run %output% 'def:size|Pass'
+    else run %output% 'def:size|Fail'
+    # A list of 'a[a.b]|2|3[a.b]4|d' should also be 4 long
+  - if <li@a[a.b]|2|3[a.b]4|d.size> == 4
+    run %output% 'def:complex_size|Pass'
+    else run %output% 'def:complex_size|Fail'
+
+

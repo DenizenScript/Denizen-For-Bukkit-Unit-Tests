@@ -47,8 +47,7 @@ Unit Test Handler:
         }
       }
     - narrate 'Starting unit tests.'
-    - if <server.has_file[UnitTest.yml]> yaml load:UnitTest.yml "id:Unit Test Yaml"
-      else yaml create "id:Unit Test Yaml"
+    - yaml create "id:Unit Test Yaml"
     - flag server ut_counter:0
     - run locally 'do tests'
     - determine fulfilled
