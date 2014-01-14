@@ -54,23 +54,22 @@ Unit Test Handler:
 
 
   do tests:
-  - if <server.flag[unit_tasks].as_list.size> <= <server.flag[ut_counter]>
+  - ^if <server.flag[unit_tasks].as_list.size> <= <server.flag[ut_counter]>
     && <queue.exists[test_queue]> == false {
-      - run 's@unit test save output'
-      - narrate 'Finished unit tests.'
-      - determine fulfilled
-      - queue clear
+      - ^run 's@unit test save output'
+      - ^narrate 'Finished unit tests.'
+      - ^determine fulfilled
+      - ^queue clear
     }
   
-  - if <queue.exists[test_queue]> == false {
-      - if <player> == null define player <server.list_players.get[1]> else define player <player>
-      - flag server ut_counter:++
-      - narrate 'Running test -> <server.flag[unit_tasks].as_list.get[<server.flag[ut_counter].as_int>]>'
-      - run <server.flag[unit_tasks].as_list.get[<server.flag[ut_counter].as_int>]> id:test_queue as:%player%
+  - ^if <queue.exists[test_queue]> == false {
+      - ^if <player> == null define player <server.list_players.get[1]> else define player <player>
+      - ^flag server ut_counter:++
+      - ^narrate 'Running test -> <server.flag[unit_tasks].as_list.get[<server.flag[ut_counter].as_int>]>'
+      - ^run <server.flag[unit_tasks].as_list.get[<server.flag[ut_counter].as_int>]> id:test_queue as:%player%
     }
 
-  - wait 2s
+  - ^wait 1s
 
-  - run locally 'do tests'
+  - ^run locally 'do tests'
 
-  

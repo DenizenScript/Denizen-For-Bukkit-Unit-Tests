@@ -52,5 +52,15 @@ Brackets Unit Test:
   - if <li@a[a.b]|2|3[a.b]4|d.size> == 4
     run %output% 'def:complex_size|Pass'
     else run %output% 'def:complex_size|Fail'
+    # A list of 'a[a.b]|2|3[a.b]4|d|5', excluding 'a[a.b]|3|d' should just be '3[a.b]4|5'
+  - if <li@a[a.b]|2|3[a.b]4|d|5.exclude[a[a.b]|3|d]> == 2|3[a.b]4|5
+    run %output% 'def:exclusion|Pass'
+    else run %output% 'def:exclusion|Fail'
+    # A list of 'a[a.b]|2|3[a.b]4|d' should contain 3[a.b]4 and a[a.b] and 2
+  - if <li@a[a.b]|2|3[a.b]4|d.contains[3[a.b]4]>
+    && <li@a[a.b]|2|3[a.b]4|d.contains[a[a.b]]>
+    && <li@a[a.b]|2|3[a.b]4|d.contains[2]>
+    run %output% 'def:contains|Pass'
+    else run %output% 'def:contains|Fail'
 
 
