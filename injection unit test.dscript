@@ -1,0 +1,42 @@
+Injection Unit Test:
+  type: world
+  speed: 0
+
+  events:
+    on server start:
+    - if <server.flag[unit_tasks].as_list> !contains <script> flag server unit_tasks:->:<script>
+
+  scro:
+  - flag global injection_unit_test_data:->:SCRO
+
+  script:
+  - define output "s@Unit Test Write Output"
+  - run 's@Unit Test Create Output' 'd:<script.name>'
+
+  - run "s@Unit Test Set Prefix" 'def:loopish blob'
+
+  - flag global injection_unit_test_data:!
+
+  - repeat 3 {
+    - flag global injection_unit_test_data:->:%value%
+    - flag global injection_unit_test_data:->:Affirm
+    - repeat 2 {
+      - flag global injection_unit_test_data:->:sub_%value%
+      - if true {
+        - flag global injection_unit_test_data:->:up
+        - inject locally path:scro
+        }
+        else {
+        - flag global injection_unit_test_data:->:down
+        }
+      }
+    }
+  - flag global injection_unit_test_data:->:complete
+  - flag global injection_unit_test_data:->:definite
+
+  - if '<global.flag[injection_unit_test_data].as_list>' == 
+    'li@1|Affirm|sub_1|up|SCRO|sub_2|up|SCRO|2|Affirm|sub_1|up|SCRO|sub_2|up|SCRO|3|Affirm|sub_1|up|SCRO|sub_2|up|SCRO|complete|definite'
+    run %output% 'def:Loop ran perfectly|Pass'
+    else run %output% 'def:Loop ran perfectly|Fail'
+  
+
