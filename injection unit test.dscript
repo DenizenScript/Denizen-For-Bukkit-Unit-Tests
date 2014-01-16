@@ -1,6 +1,6 @@
 Injection Unit Test:
   type: world
-  speed: 0
+  speed: 1
 
   events:
     on server start:
@@ -10,14 +10,15 @@ Injection Unit Test:
   - flag global injection_unit_test_data:->:SCRO
 
   script:
-  - define output "s@Unit Test Write Output"
-  - run 's@Unit Test Create Output' 'd:<script.name>'
+  - ^define output "s@Unit Test Write Output"
+  - ^run 's@Unit Test Create Output' 'd:<script.name>'
 
-  - run "s@Unit Test Set Prefix" 'def:loopish blob'
+  - ^run "s@Unit Test Set Prefix" 'def:loopish blob'
 
-  - flag global injection_unit_test_data:!
+  - ^flag global injection_unit_test_data:!
 
-  - repeat 3 {
+  # Test instant things
+  - ^repeat 3 {
     - flag global injection_unit_test_data:->:%value%
     - flag global injection_unit_test_data:->:Affirm
     - repeat 2 {
@@ -31,12 +32,26 @@ Injection Unit Test:
         }
       }
     }
-  - flag global injection_unit_test_data:->:complete
-  - flag global injection_unit_test_data:->:definite
+  - ^flag global injection_unit_test_data:->:complete
+  - ^flag global injection_unit_test_data:->:definite
 
-  - if '<global.flag[injection_unit_test_data].as_list>' == 
+  - ^if '<global.flag[injection_unit_test_data].as_list>' == 
     'li@1|Affirm|sub_1|up|SCRO|sub_2|up|SCRO|2|Affirm|sub_1|up|SCRO|sub_2|up|SCRO|3|Affirm|sub_1|up|SCRO|sub_2|up|SCRO|complete|definite'
     run %output% 'def:Loop ran perfectly|Pass'
     else run %output% 'def:Loop ran perfectly|Fail'
+    
+  # Test things that should or shouldn't delay
+  - ^run "s@Unit Test Set Prefix" 'def:timing'
+  
+  - ^define time <server.current_time_millis>
+  - ^if <server.current_time_millis.sub[%time%]> < 50
+    run %output% 'def:Instant|Pass'
+    else run %output% 'def:Instant|Fail'
+  
+  - ^define time <server.current_time_millis>
+  - ^wait 1s
+  - ^if <server.current_time_millis.sub[%time%]> > 1000
+    run %output% 'def:Delayed|Pass'
+    else run %output% 'def:Delayed|Fail'
   
 

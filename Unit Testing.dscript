@@ -69,7 +69,7 @@ Unit Test Handler:
       - ^run <server.flag[unit_tasks].as_list.get[<server.flag[ut_counter].as_int>]> id:test_queue as:%player%
     }
 
-  - ^wait 1s
+  - ^wait 2s
 
   - ^run locally 'do tests'
 
