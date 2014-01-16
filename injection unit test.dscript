@@ -11,7 +11,6 @@ Injection Unit Test:
 
   script:
   - ^define output "s@Unit Test Write Output"
-  - ^run 's@Unit Test Create Output' 'd:<script.name>'
 
   - ^run "s@Unit Test Set Prefix" 'def:loopish blob'
 
@@ -53,5 +52,7 @@ Injection Unit Test:
   - ^if <server.current_time_millis.sub[%time%]> > 1000
     run %output% 'def:Delayed|Pass'
     else run %output% 'def:Delayed|Fail'
+    
+  - ^run 's@Unit Test Create Output' 'd:<script.name>'
   
 

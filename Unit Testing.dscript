@@ -62,14 +62,16 @@ Unit Test Handler:
       - ^queue clear
     }
   
-  - ^if <queue.exists[test_queue]> == false {
-      - ^if <player> == null define player <server.list_players.get[1]> else define player <player>
-      - ^flag server ut_counter:++
-      - ^narrate 'Running test -> <server.flag[unit_tasks].as_list.get[<server.flag[ut_counter].as_int>]>'
-      - ^run <server.flag[unit_tasks].as_list.get[<server.flag[ut_counter].as_int>]> id:test_queue as:%player%
+  - ^if <queue.exists[test_queue]> {
+    - narrate "Error<&co> test_queue already exists! Cannot complete!"
+    - queue clear
     }
+  - ^if <player> == null define player <server.list_players.get[1]> else define player <player>
+  - ^flag server ut_counter:++
+  - ^narrate 'Running test -> <server.flag[unit_tasks].as_list.get[<server.flag[ut_counter].as_int>]>'
+  - ~run <server.flag[unit_tasks].as_list.get[<server.flag[ut_counter].as_int>]> id:test_queue as:%player%
 
-  - ^wait 2s
+  - ^wait 10t
 
   - ^run locally 'do tests'
 
