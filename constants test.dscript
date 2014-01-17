@@ -33,8 +33,8 @@ Constant Tags Unit Task:
     ## Create necessary objects
   - define output "s@Unit Test Write Output"
   - run 's@Unit Test Create Output' 'd:<script.name>'
-  - create e@player 'constant npc'
-  - assignment 'npc:n@constant npc' set 's@constant tag tester'
+  - create e@player 'constant npc' save:constantnpc
+  - assignment 'npc:<entry[constantnpc].created_npc>' set 's@constant tag tester'
 
     ## Test script constants
   - run "s@Unit Test Set Prefix" 'def:script constants'
@@ -59,22 +59,22 @@ Constant Tags Unit Task:
   ## Test npc constants
   - run "s@Unit Test Set Prefix" 'def:npc constants'
   
-  - if '<n@constant npc.constant[npc test constant]>' == 'expected value'
+  - if '<entry[constantnpc].created_npc.constant[npc test constant]>' == 'expected value'
     run %output% def:default|Pass
     else run %output% def:default|Fail
 
-  - if 'npc:n@constant npc' '<cons:npc test constant>' == 'expected value'
+  - if 'npc:<^entry[constantnpc].created_npc>' '<cons:npc test constant>' == 'expected value'
     run %output% def:legacy|Pass
     else run %output% def:legacy|Fail
 
-  - execute as_server "npc sel 'constant npc'"
+  - execute as_server "npc sel <entry[constantnpc].created_npc.id>"
   - execute as_server "npc constants --set 'npc test constant' --value 'new expected value'"
 
-  - if '<n@constant npc.constant[npc test constant]>' == 'new expected value'
+  - if '<entry[constantnpc].created_npc.constant[npc test constant]>' == 'new expected value'
     run %output% def:override|Pass
     else run %output% def:override|Fail   
 
-  - remove '<n@constant npc>'
+  - remove '<entry[constantnpc].created_npc>'
 
 
 
