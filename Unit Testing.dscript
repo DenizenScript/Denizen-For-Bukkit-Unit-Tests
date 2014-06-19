@@ -34,6 +34,7 @@ Unit Test Save Output:
   - run "s@Unit Test Write Output" "def:Denizen Version|<server.denizen_version>"
   - run "s@Unit Test Write Output" "def:Server Version|<server.version>"
   - yaml savefile:UnitTest.yml "id:Unit Test Yaml"
+  - yaml unload "id:Unit Test Yaml"
 
 Unit Test Handler:
   type: world
