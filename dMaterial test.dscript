@@ -29,10 +29,6 @@ dMaterial Unit Test:
   - if <m@red_wool.is_made_of[m@wood]> != true 
     run %output% 'def:is_made_of_2|Pass'
     else run %output% 'def:is_made_of_2|Fail'
-    # ..or black_wool.
-  - if <m@red_wool.is_made_of[m@black_wool]> != true 
-    run %output% 'def:is_made_of_3|Pass'
-    else run %output% 'def:is_made_of_3|Fail'
     # Datas are ignored when not a DataVariety dMaterial..
   - if <m@brewing_stand,1.is_made_of[m@brewing_stand]> == true
     run %output% 'def:is_made_of_4|Pass'
