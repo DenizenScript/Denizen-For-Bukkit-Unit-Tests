@@ -6,7 +6,7 @@ test_generate_number_list:
 
   script:
   # Figure out how many iterations to do
-  - define iterations '<el@val[%high%].sub[<m:%low% - 1>].asint>'
+  - define iterations '<el@val[%high%].sub[<def[low].sub[1]>].asint>'
   
   # Counters are easier with flags, though can also
   # be done with the use of definitions.
