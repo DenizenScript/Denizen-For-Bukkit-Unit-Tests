@@ -3,6 +3,7 @@ Unit Test Set Prefix:
   type: task
   speed: 0
   definitions: prefix
+  debug: false
   script:
   - flag global "Unit Test Prefix:%prefix%."
 
@@ -11,6 +12,7 @@ Unit Test Write Output:
   type: task
   speed: 0
   definitions: key|value
+  debug: false
   script:
   - yaml "write:<server.flag[Unit Test Section]>.<server.flag[Unit Test Prefix]>%key%" "value:%value%" "id:Unit Test Yaml"
 
@@ -19,6 +21,7 @@ Unit Test Create Output:
   type: task
   speed: 0
   definitions: test_section
+  debug: false
   script:
   - flag global "Unit Test Section:%test_section%"
   - flag global "Unit Test Prefix:"
@@ -27,6 +30,7 @@ Unit Test Create Output:
 Unit Test Save Output:
   type: task
   speed: 0
+  debug: false
   script:
   - flag global "Unit Test Section:_stats"
   - flag global "Unit Test Prefix:"
@@ -59,7 +63,6 @@ Unit Test Handler:
     && <queue.exists[test_queue]> == false {
       - ^run 's@unit test save output'
       - ^narrate 'Finished unit tests.'
-      - ^determine fulfilled
       - ^queue clear
     }
   
@@ -67,7 +70,7 @@ Unit Test Handler:
     - narrate "Error<&co> test_queue already exists! Cannot complete!"
     - queue clear
     }
-  - ^if <player> == null define player <server.list_players.get[1]> else define player <player>
+  - ^if <player||null> == null define player <server.list_players.get[1]> else define player <player>
   - ^flag server ut_counter:++
   - ^narrate 'Running test -> <server.flag[unit_tasks].as_list.get[<server.flag[ut_counter].as_int>]>'
   - ~run <server.flag[unit_tasks].as_list.get[<server.flag[ut_counter].as_int>]> id:test_queue as:%player%
