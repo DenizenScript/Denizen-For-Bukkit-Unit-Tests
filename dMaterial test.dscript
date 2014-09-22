@@ -1,5 +1,6 @@
 dMaterial Unit Test:
   type: world
+  debug: false
   speed: 0
 
     ## Include this exact statement for each unit test

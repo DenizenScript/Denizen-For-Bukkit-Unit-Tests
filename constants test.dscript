@@ -1,6 +1,7 @@
 ## Inventory script for testing
 Constant Tag Tester:
   type: assignment
+  debug: false
 
   default constants:
     npc test constant: expected value
@@ -21,6 +22,7 @@ Constant Tag Tester:
 
 Constant Tags Unit Task:
   type: world
+  debug: false
   speed: 0
 
   events:

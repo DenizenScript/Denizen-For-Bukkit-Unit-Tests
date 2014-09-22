@@ -12,6 +12,7 @@ dInventory Unit Inventory:
 
 dInventory Unit Task:
   type: world
+  debug: false
   speed: 0
 
   events:

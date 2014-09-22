@@ -1,5 +1,6 @@
 Brackets Unit Test:
   type: world
+  debug: false
   speed: 0
 
   events:

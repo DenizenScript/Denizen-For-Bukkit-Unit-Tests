@@ -2,6 +2,7 @@
 
 test_generate_number_list:
   type: procedure
+  debug: false
   definitions: low|high
 
   script:
@@ -33,6 +34,7 @@ test_generate_number_list:
 
 test_isbetween:
   type: procedure
+  debug: false
   definitions: val|low|high
 
   script:
@@ -44,6 +46,7 @@ test_isbetween:
 
 Procedure Script Unit Test:
   type: world
+  debug: false
   speed: 0
 
   events:

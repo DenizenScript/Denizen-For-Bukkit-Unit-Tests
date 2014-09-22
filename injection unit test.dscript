@@ -1,5 +1,6 @@
 Injection Unit Test:
   type: world
+  debug: false
   speed: 1
 
   events:
