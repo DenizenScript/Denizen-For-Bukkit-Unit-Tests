@@ -65,10 +65,6 @@ Constant Tags Unit Task:
     run %output% def:default|Pass
     else run %output% def:default|Fail
 
-  - if 'npc:<^entry[constantnpc].created_npc>' '<cons:npc test constant>' == 'expected value'
-    run %output% def:legacy|Pass
-    else run %output% def:legacy|Fail
-
   - execute as_server "npc sel <entry[constantnpc].created_npc.id>"
   - execute as_server "npc constants --set 'npc test constant' --value 'new expected value'"
 

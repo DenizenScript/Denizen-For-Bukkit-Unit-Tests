@@ -30,7 +30,6 @@ Unit Test Create Output:
 Unit Test Save Output:
   type: task
   speed: 0
-  debug: false
   script:
   - flag global "Unit Test Section:_stats"
   - flag global "Unit Test Prefix:"
@@ -70,7 +69,12 @@ Unit Test Handler:
     - narrate "Error<&co> test_queue already exists! Cannot complete!"
     - queue clear
     }
-  - ^if <player||null> == null define player <server.list_players.get[1]> else define player <player>
+  - ^if <player||null> == null {
+    - define player <server.list_players.get[1]>
+    }
+    else {
+    - define player <player>
+    }
   - ^flag server ut_counter:++
   - ^narrate 'Running test -> <server.flag[unit_tasks].as_list.get[<server.flag[ut_counter].as_int>]>'
   - ~run <server.flag[unit_tasks].as_list.get[<server.flag[ut_counter].as_int>]> id:test_queue as:%player%
