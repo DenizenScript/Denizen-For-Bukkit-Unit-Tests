@@ -118,5 +118,3 @@ dInventory Unit Task:
     else run %output% def:title|Fail
   ### End property tags
 
-  ## Save output to Yaml file
-  - run "s@Unit Test Save Output" "def:dInventory Unit Test"

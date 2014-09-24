@@ -60,7 +60,7 @@ Unit Test Handler:
   do tests:
   - ^if <server.flag[unit_tasks].as_list.size> <= <server.flag[ut_counter]>
     && <queue.exists[test_queue]> == false {
-      - ^run 's@unit test save output'
+      - ^inject 's@unit test save output'
       - ^narrate 'Finished unit tests.'
       - ^queue clear
     }
@@ -81,5 +81,5 @@ Unit Test Handler:
 
   - ^wait 10t
 
-  - ^run locally 'do tests'
+  - ^inject locally 'do tests'
 
